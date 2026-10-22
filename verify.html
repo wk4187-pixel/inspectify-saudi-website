@@ -1,0 +1,72 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Employee Verification | iNSPECTIFY</title>
+<style>
+body{font-family:Arial,sans-serif;background:#f2f6f8;margin:0;color:#13283f}
+header{background:#13283f;color:white;padding:25px 16px;text-align:center}
+header h1{margin:0;font-size:23px}
+header p{color:#00d8bb;margin-bottom:0}
+main{max-width:500px;margin:28px auto;padding:20px}
+.card{background:white;border-radius:14px;padding:22px;box-shadow:0 4px 18px #0001}
+label{display:block;font-weight:bold;margin-bottom:8px}
+input{box-sizing:border-box;width:100%;padding:13px;border:1px solid #bbb;border-radius:7px;font-size:16px}
+button{width:100%;padding:13px;margin-top:12px;background:#13283f;color:white;border:0;border-radius:7px;font-size:16px}
+#result{margin-top:20px;line-height:1.8}
+footer{text-align:center;color:#667;padding:20px;font-size:12px}
+</style>
+</head>
+<body>
+<header>
+<h1>iNSPECTIFY</h1>
+<p>& ENGINEERING SERVICES CO.</p>
+</header>
+<main>
+<div class="card">
+<h2>Employee Verification</h2>
+<p>Enter the employee ID to check the verification record.</p>
+<label for="empid">Employee ID</label>
+<input id="empid" placeholder="e.g. IE-1001" autocomplete="off">
+<button onclick="verifyEmployee()">Verify Employee</button>
+<div id="result" aria-live="polite"></div>
+</div>
+</main>
+<footer>Official verification portal · Contact the company to confirm records.</footer>
+<script>
+const employees = {
+  "IE-1001": {
+    name: "DEMO EMPLOYEE",
+    department: "Inspection / Engineering",
+    status: "DEMO RECORD - NOT VERIFIED",
+    validity: "Sample only"
+  }
+};
+function verifyEmployee(){
+  const id = document.getElementById("empid").value.trim().toUpperCase();
+  const result = document.getElementById("result");
+  const e = employees[id];
+  if(!id){
+    result.textContent = "Please enter an Employee ID.";
+    return;
+  }
+  if(!e){
+    result.textContent = "No matching record found. Please contact the company.";
+    return;
+  }
+  result.innerHTML = "";
+  const heading = document.createElement("h3");
+  heading.textContent = "Employee Record";
+  result.appendChild(heading);
+  [["Employee ID",id],["Name",e.name],["Department",e.department],
+   ["Status",e.status],["Validity",e.validity]].forEach(([label,value])=>{
+    const p = document.createElement("p");
+    p.textContent = label + ": " + value;
+    result.appendChild(p);
+  });
+}
+</script>
+</body>
+</html>
