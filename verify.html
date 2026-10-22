@@ -1,72 +1,76 @@
-
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Employee Verification | iNSPECTIFY</title>
-<style>
-body{font-family:Arial,sans-serif;background:#f2f6f8;margin:0;color:#13283f}
-header{background:#13283f;color:white;padding:25px 16px;text-align:center}
-header h1{margin:0;font-size:23px}
-header p{color:#00d8bb;margin-bottom:0}
-main{max-width:500px;margin:28px auto;padding:20px}
-.card{background:white;border-radius:14px;padding:22px;box-shadow:0 4px 18px #0001}
-label{display:block;font-weight:bold;margin-bottom:8px}
-input{box-sizing:border-box;width:100%;padding:13px;border:1px solid #bbb;border-radius:7px;font-size:16px}
-button{width:100%;padding:13px;margin-top:12px;background:#13283f;color:white;border:0;border-radius:7px;font-size:16px}
-#result{margin-top:20px;line-height:1.8}
-footer{text-align:center;color:#667;padding:20px;font-size:12px}
+ <head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Inspectify Certificate Verification</title>
+  <style>
+*{box-sizing:border-box}
+body{margin:0;background:#f1f5f7;color:#102238;font-family:Arial,Helvetica,sans-serif}
+header{background:#07182d;color:white;text-align:center;padding:22px 16px;border-bottom:5px solid #70c9b2}
+header h1{font-size:20px;line-height:1.35;margin:0}
+header p{font-size:12px;margin:6px 0 0;color:#d6e6e9}
+main{width:min(680px,100%);margin:26px auto;padding:0 15px}
+.panel{background:#fff;padding:22px;border-radius:14px;box-shadow:0 6px 22px #10223812}
+label{display:block;font-weight:bold;margin-bottom:9px}
+input{display:block;width:100%;padding:14px;border:1px solid #bdc8d2;border-radius:8px;font-size:16px}
+button{width:100%;margin-top:12px;padding:14px;background:#087e79;color:#fff;border:0;border-radius:8px;font-size:16px;font-weight:bold}
+#message{margin-top:14px;font-size:14px;line-height:1.5;color:#9a302c}
+#cardWrap{margin-top:20px}
+#cardWrap img{display:block;width:100%;height:auto;border:1px solid #d8e0e5;border-radius:8px}
+.hint{font-size:12px;color:#657487;line-height:1.5;margin:15px 0 0}
+footer{text-align:center;padding:22px;color:#647386;font-size:11px}
 </style>
-</head>
-<body>
-<header>
-<h1>iNSPECTIFY</h1>
-<p>& ENGINEERING SERVICES CO.</p>
-</header>
-<main>
-<div class="card">
-<h2>Employee Verification</h2>
-<p>Enter the employee ID to check the verification record.</p>
-<label for="empid">Employee ID</label>
-<input id="empid" placeholder="e.g. IE-1001" autocomplete="off">
-<button onclick="verifyEmployee()">Verify Employee</button>
-<div id="result" aria-live="polite"></div>
-</div>
-</main>
-<footer>Official verification portal · Contact the company to confirm records.</footer>
-<script>
-const employees = {
-  "IE-1001": {
-    name: "DEMO EMPLOYEE",
-    department: "Inspection / Engineering",
-    status: "DEMO RECORD - NOT VERIFIED",
-    validity: "Sample only"
-  }
-};
-function verifyEmployee(){
-  const id = document.getElementById("empid").value.trim().toUpperCase();
-  const result = document.getElementById("result");
-  const e = employees[id];
-  if(!id){
-    result.textContent = "Please enter an Employee ID.";
+ </head>
+ <body>
+  <header>
+   <h1>iNSPECTIFY &amp; ENGINEERING SERVICES CO.</h1>
+   <p>CERTIFICATE VERIFICATION</p>
+  </header>
+  <main>
+   <section class="panel">
+    <label for="certificate">Enter Certificate Number</label> <input id="certificate" type="text" placeholder="Enter certificate number" autocomplete="off">
+    <button id="verify" type="button">Show ID Card</button>
+    <div id="message" role="status"></div>
+    <div id="cardWrap" hidden>
+     <img id="card" alt="Certificate ID card">
+    </div>
+    <p class="hint">This is a demo display page. Showing a card image does not independently confirm identity, employment, or certificate validity.</p>
+   </section>
+  </main>
+  <footer>Official verification must be confirmed with the issuing company.</footer>
+  <script>
+const VALID_CERTIFICATE_NUMBER = "IESCD11060";
+const CARD_IMAGE_FILE = "inspectify-certificate-card.jpg";
+const input = document.getElementById("certificate");
+const message = document.getElementById("message");
+const cardWrap = document.getElementById("cardWrap");
+const card = document.getElementById("card");
+ 
+function verifyCard(){
+  const entered = input.value.trim().toUpperCase().replace(/\s+/g, "");
+  cardWrap.hidden = true;
+  card.removeAttribute("src");
+  if(!entered){
+    message.textContent = "Please enter the certificate number.";
     return;
   }
-  if(!e){
-    result.textContent = "No matching record found. Please contact the company.";
+  if(entered !== VALID_CERTIFICATE_NUMBER){
+    message.textContent = "Certificate number not found. Please check and try again.";
     return;
   }
-  result.innerHTML = "";
-  const heading = document.createElement("h3");
-  heading.textContent = "Employee Record";
-  result.appendChild(heading);
-  [["Employee ID",id],["Name",e.name],["Department",e.department],
-   ["Status",e.status],["Validity",e.validity]].forEach(([label,value])=>{
-    const p = document.createElement("p");
-    p.textContent = label + ": " + value;
-    result.appendChild(p);
-  });
+  message.textContent = "";
+  card.onload = () => { cardWrap.hidden = false; };
+  card.onerror = () => {
+    cardWrap.hidden = true;
+    message.textContent = "Card image could not be loaded. Please upload the image file beside verify.html.";
+  };
+  card.src = CARD_IMAGE_FILE;
 }
+document.getElementById("verify").addEventListener("click", verifyCard);
+input.addEventListener("keydown", event => { if(event.key === "Enter") verifyCard(); });
+const certFromQr = new URLSearchParams(window.location.search).get("cert");
+if(certFromQr){ input.value = certFromQr; verifyCard(); }
 </script>
-</body>
+ </body>
 </html>
