@@ -1,107 +1,226 @@
+
 <!doctype html>
 <html lang="en">
- <head>
+<head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Inspectify Certificate Verification</title>
+
   <style>
-*{box-sizing:border-box}
-body{margin:0;background:#f1f5f7;color:#102238;font-family:Arial,Helvetica,sans-serif}
-header{background:#07182d;color:white;text-align:center;padding:22px 16px;border-bottom:5px solid #70c9b2}
-header h1{font-size:20px;line-height:1.35;margin:0}
-header p{font-size:12px;margin:6px 0 0;color:#d6e6e9}
-main{width:min(680px,100%);margin:26px auto;padding:0 15px}
-.panel{background:#fff;padding:22px;border-radius:14px;box-shadow:0 6px 22px #10223812}
-label{display:block;font-weight:bold;margin-bottom:9px}
-input{display:block;width:100%;padding:14px;border:1px solid #bdc8d2;border-radius:8px;font-size:16px}
-button{width:100%;margin-top:12px;padding:14px;background:#087e79;color:#fff;border:0;border-radius:8px;font-size:16px;font-weight:bold}
-#message{margin-top:14px;font-size:14px;line-height:1.5;color:#9a302c}
-#cardWrap{margin-top:20px}
-#cardWrap img{display:block;width:100%;height:auto;border:1px solid #d8e0e5;border-radius:8px}
-.hint{font-size:12px;color:#657487;line-height:1.5;margin:15px 0 0}
-footer{text-align:center;padding:22px;color:#647386;font-size:11px}
-</style>
- </head>
- <body>
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      background: #f1f5f7;
+      color: #102238;
+      font-family: Arial, Helvetica, sans-serif;
+    }
+
+    header {
+      background: #07182d;
+      color: white;
+      text-align: center;
+      padding: 22px 16px;
+      border-bottom: 5px solid #70c9b2;
+    }
+
+    header h1 {
+      font-size: 20px;
+      line-height: 1.35;
+      margin: 0;
+    }
+
+    header p {
+      font-size: 12px;
+      margin: 6px 0 0;
+      color: #d6e6e9;
+    }
+
+    main {
+      width: min(680px, 100%);
+      margin: 26px auto;
+      padding: 0 15px;
+    }
+
+    .panel {
+      background: #fff;
+      padding: 22px;
+      border-radius: 14px;
+      box-shadow: 0 6px 22px #10223812;
+    }
+
+    label {
+      display: block;
+      font-weight: bold;
+      margin-bottom: 9px;
+    }
+
+    input {
+      display: block;
+      width: 100%;
+      padding: 14px;
+      border: 1px solid #bdc8d2;
+      border-radius: 8px;
+      font-size: 16px;
+    }
+
+    button {
+      width: 100%;
+      margin-top: 12px;
+      padding: 14px;
+      background: #087e79;
+      color: #fff;
+      border: 0;
+      border-radius: 8px;
+      font-size: 16px;
+      font-weight: bold;
+    }
+
+    #message {
+      margin-top: 14px;
+      font-size: 14px;
+      line-height: 1.5;
+      color: #9a302c;
+    }
+
+    #cardWrap { margin-top: 20px; }
+
+    #cardWrap img {
+      display: block;
+      width: 100%;
+      height: auto;
+      border: 1px solid #d8e0e5;
+      border-radius: 8px;
+    }
+
+    .hint {
+      font-size: 12px;
+      color: #657487;
+      line-height: 1.5;
+      margin: 15px 0 0;
+    }
+
+    footer {
+      text-align: center;
+      padding: 22px;
+      color: #647386;
+      font-size: 11px;
+    }
+  </style>
+</head>
+
+<body>
   <header>
-   <h1>iNSPECTIFY &amp; ENGINEERING SERVICES CO.</h1>
-   <p>CERTIFICATE VERIFICATION</p>
+    <h1>iNSPECTIFY &amp; ENGINEERING SERVICES CO.</h1>
+    <p>CERTIFICATE VERIFICATION</p>
   </header>
+
   <main>
-   <section class="panel">
-    <label for="certificate">Enter Certificate Number</label> <input id="certificate" type="text" placeholder="Enter certificate number" autocomplete="off">
-    <button id="verify" type="button">Show ID Card</button>
-    <div id="message" role="status"></div>
-    <div id="cardWrap" hidden>
-     <img id="card" alt="Certificate ID card">
-    </div>
-    <p class="hint">This is a demo display page. Showing a card image does not independently confirm identity, employment, or certificate validity.</p>
-   </section>
+    <section class="panel">
+      <label for="certificate">Enter Certificate Number</label>
+
+      <input
+        id="certificate"
+        type="text"
+        placeholder="Enter certificate number"
+        autocomplete="off"
+      >
+
+      <button id="verify" type="button">Show ID Card</button>
+
+      <div id="message" role="status" aria-live="polite"></div>
+
+      <div id="cardWrap" hidden>
+        <img id="card" alt="Certificate ID card">
+      </div>
+
+      <p class="hint">
+        This is a demo display page. Showing a card image does not
+        independently confirm identity, employment, or certificate validity.
+      </p>
+    </section>
   </main>
-  <footer>Official verification must be confirmed with the issuing company.</footer>
+
+  <footer>
+    Official verification must be confirmed with the issuing company.
+  </footer>
+
   <script>
+    const records = {
+      "IESCD11060": {
+        name: "SHOAIB KHAN",
+        image: "Screenshot_2026-10-22-17-11-30-147_com.mi.globalbrowser.jpg"
+      },
 
-<script>
-const records = {
-  "IESCD11060": {
-    name: "SHOAIB KHAN",
-    image: "Screenshot_2026-10-22-17-11-30-147_com.mi.globalbrowser.jpg"
-  },
-  "IESCD11061": {
-    name: "KASHIF REHMAN",
-    image: "employee-103.jpg"
-  }
-};
+      "IESCD11061": {
+        name: "KASHIF REHMAN",
+        image: "employee-103.jpg"
+      }
+    };
 
-const input = document.getElementById("certificate");
-const message = document.getElementById("message");
-const cardWrap = document.getElementById("cardWrap");
-const card = document.getElementById("card");
+    const input = document.getElementById("certificate");
+    const message = document.getElementById("message");
+    const cardWrap = document.getElementById("cardWrap");
+    const card = document.getElementById("card");
 
-function verifyCard() {
-  const entered = input.value.trim().toUpperCase().replace(/\s+/g, "");
-  cardWrap.hidden = true;
-  card.removeAttribute("src");
+    function verifyCard() {
+      const entered = input.value
+        .trim()
+        .toUpperCase()
+        .replace(/\s+/g, "");
 
-  if (!entered) {
-    message.textContent = "Please enter the certificate number.";
-    return;
-  }
+      cardWrap.hidden = true;
+      card.removeAttribute("src");
 
-  const record = records[entered];
+      if (!entered) {
+        message.textContent =
+          "Please enter the certificate number.";
+        return;
+      }
 
-  if (!record) {
-    message.textContent = "Certificate number not found.";
-    return;
-  }
+      const record = records[entered];
 
-  message.textContent =
-    record.name + " — PENDING COMPANY CONFIRMATION, NOT VERIFIED.";
+      if (!record) {
+        message.textContent =
+          "Certificate number not found.";
+        return;
+      }
 
-  card.alt = record.name + " submitted card image";
-  card.onload = () => { cardWrap.hidden = false; };
-  card.onerror = () => {
-    cardWrap.hidden = true;
-    message.textContent =
-      "Image not found. Please check the image filename in GitHub.";
-  };
+      message.textContent =
+        record.name +
+        " — PENDING COMPANY CONFIRMATION, NOT VERIFIED.";
 
-  card.src = record.image;
-}
+      card.alt = record.name + " submitted card image";
 
-document.getElementById("verify")
-  .addEventListener("click", verifyCard);
+      card.onload = () => {
+        cardWrap.hidden = false;
+      };
 
-input.addEventListener("keydown", event => {
-  if (event.key === "Enter") verifyCard();
-});
+      card.onerror = () => {
+        cardWrap.hidden = true;
+        message.textContent =
+          "Image not found. Please check the image filename in GitHub.";
+      };
 
-const certFromQr = new URLSearchParams(window.location.search).get("cert");
-if (certFromQr) {
-  input.value = certFromQr;
-  verifyCard();
-}
-</script>
-</script>
- </body>
+      card.src = record.image;
+    }
+
+    document.getElementById("verify")
+      .addEventListener("click", verifyCard);
+
+    input.addEventListener("keydown", event => {
+      if (event.key === "Enter") {
+        verifyCard();
+      }
+    });
+
+    const certFromQr =
+      new URLSearchParams(window.location.search).get("cert");
+
+    if (certFromQr) {
+      input.value = certFromQr;
+      verifyCard();
+    }
+  </script>
+</body>
 </html>
