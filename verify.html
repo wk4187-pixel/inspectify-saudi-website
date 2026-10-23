@@ -40,37 +40,68 @@ footer{text-align:center;padding:22px;color:#647386;font-size:11px}
   </main>
   <footer>Official verification must be confirmed with the issuing company.</footer>
   <script>
-const VALID_CERTIFICATE_NUMBER = "IESCD11060";
-const CARD_IMAGE_FILE = "Screenshot_2026-10-22-17-11-30-147_com.mi.globalbrowser.jpg";
+
+<script>
+const records = {
+  "IESCD11060": {
+    name: "SHOAIB KHAN",
+    image: "Screenshot_2026-10-22-17-11-30-147_com.mi.globalbrowser.jpg"
+  },
+  "IESCD11061": {
+    name: "KASHIF REHMAN",
+    image: "Employee-103.jpg"
+  }
+};
+
 const input = document.getElementById("certificate");
 const message = document.getElementById("message");
 const cardWrap = document.getElementById("cardWrap");
 const card = document.getElementById("card");
- 
-function verifyCard(){
+
+function verifyCard() {
   const entered = input.value.trim().toUpperCase().replace(/\s+/g, "");
   cardWrap.hidden = true;
   card.removeAttribute("src");
-  if(!entered){
+
+  if (!entered) {
     message.textContent = "Please enter the certificate number.";
     return;
   }
-  if(entered !== VALID_CERTIFICATE_NUMBER){
-    message.textContent = "Certificate number not found. Please check and try again.";
+
+  const record = records[entered];
+
+  if (!record) {
+    message.textContent = "Certificate number not found.";
     return;
   }
-  message.textContent = "";
+
+  message.textContent =
+    record.name + " — PENDING COMPANY CONFIRMATION, NOT VERIFIED.";
+
+  card.alt = record.name + " submitted card image";
   card.onload = () => { cardWrap.hidden = false; };
   card.onerror = () => {
     cardWrap.hidden = true;
-    message.textContent = "Card image could not be loaded. Please upload the image file beside verify.html.";
+    message.textContent =
+      "Image not found. Please check the image filename in GitHub.";
   };
-  card.src = CARD_IMAGE_FILE;
+
+  card.src = record.image;
 }
-document.getElementById("verify").addEventListener("click", verifyCard);
-input.addEventListener("keydown", event => { if(event.key === "Enter") verifyCard(); });
+
+document.getElementById("verify")
+  .addEventListener("click", verifyCard);
+
+input.addEventListener("keydown", event => {
+  if (event.key === "Enter") verifyCard();
+});
+
 const certFromQr = new URLSearchParams(window.location.search).get("cert");
-if(certFromQr){ input.value = certFromQr; verifyCard(); }
+if (certFromQr) {
+  input.value = certFromQr;
+  verifyCard();
+}
+</script>
 </script>
  </body>
 </html>
